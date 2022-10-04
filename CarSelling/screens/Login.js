@@ -6,7 +6,7 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const image = require('../assets/coverImageLogin.png')
 
-export default function Login() {
+export default function Login({ navigation }) {
     return (
         <NativeBaseProvider>
             <Box style={styles.mainContainer}>
@@ -23,7 +23,7 @@ export default function Login() {
                         </TouchableOpacity>
                         <Text style={styles.footerText}>Don't Have Account?</Text>
                         <TouchableOpacity style={styles.btnRegister}>
-                            <Text style={{ color: 'green', fontSize: 13, fontWeight: "600", letterSpacing: 0.5 }}>Sign Up</Text>
+                            <Text style={{ color: 'green', fontSize: 13, fontWeight: "600", letterSpacing: 0.5 }}  onPress={()=>{navigation.navigate("SignUp")}}>Sign Up</Text>
                         </TouchableOpacity>
                     </View>
                 </ImageBackground>

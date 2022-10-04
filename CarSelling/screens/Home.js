@@ -7,7 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 // const windowHeight = Dimensions.get('window').height;
 const image = require('../assets/coverImage.png')
 
-export default function Home() {
+export default function Home({ navigation }) {
     return (
         <NativeBaseProvider>
             {/* <Box style={styles.mainContainer}> */}
@@ -16,10 +16,10 @@ export default function Home() {
                         <Text style={styles.topic}>MuffleX</Text>
                         <Text style={styles.subTopic}>FIND YOUR DREAM CAR</Text>
                     </View>
-                    <View style={styles.container}>
-                        <TouchableOpacity style={styles.button}>
-                            <LinearGradient colors={['#577ff7', '#0712e0', '#080c5e']} style={styles.gradient}>
-                                <Text style={styles.text}>Explore Now</Text>
+                    <View style={styles.container} onPress={()=>{navigation.navigate("Login")}}>
+                        <TouchableOpacity style={styles.button} onPress={()=>{navigation.navigate("Login")}}>
+                            <LinearGradient colors={['#577ff7', '#0712e0', '#080c5e']} style={styles.gradient} >
+                                <Text style={styles.text} onPress={()=>{navigation.navigate("Login")}}>Explore Now</Text>
                             </LinearGradient>
                         </TouchableOpacity>
                     </View>
