@@ -1,12 +1,42 @@
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image, Dimensions, ImageBackground, Input } from 'react-native'
-import React from 'react'
-import { NativeBaseProvider, Box } from 'native-base';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image, Dimensions, ImageBackground,Alert } from 'react-native'
+import React, { useState } from 'react'
+import { NativeBaseProvider, Box, Input, Center } from 'native-base';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const image = require('../assets/coverImageLogin.png')
 
 export default function Login({ navigation }) {
+
+    const [username,setUsername] = useState("");
+    const [password,setPassword] = useState("");
+
+    loginUser = () => {
+        fetch(`http://192.168.43.224:4000/users/login/${username}/${password}`, {
+            method: "GET",
+            headers:{
+                'content-type':'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            console.log(json);
+            if(json.length === 0){
+                Alert.alert("Username or password incorrect.Try again!")
+            } else {
+                clearTextFields()
+                Alert.alert("Login Successful.");
+                navigation.navigate("LoadAllCars");
+            }
+        })
+        .catch((err)=>Alert.alert(err.message));
+    }
+
+    clearTextFields = () => {
+        setUsername("");
+        setPassword("");
+    }
+
     return (
         <NativeBaseProvider>
             <Box style={styles.mainContainer}>
@@ -16,10 +46,10 @@ export default function Login({ navigation }) {
                         <Text style={styles.subTopic}>FIND YOUR DREAM CAR</Text>
                     </View>
                     <View style={styles.container2}>
-                        <TextInput style={styles.input1} placeholder='   Username' />
-                        <TextInput style={styles.input2} placeholder='   Password' />
+                        <TextInput style={styles.input1} textAlign={'center'} value={username} placeholder='Username' onChangeText={(e) => { setUsername(e) }} />
+                        <TextInput style={styles.input2} textAlign={'center'} value={password} placeholder='Password'  onChangeText={(e) => { setPassword(e) }} />
                         <TouchableOpacity style={styles.btn}>
-                            <Text style={{ color: '#ffff', fontSize: 20 }}>Sign In</Text>
+                            <Text style={{ color: '#ffff', fontSize: 20 }}  onPress={()=>{loginUser()}} >Sign In</Text>
                         </TouchableOpacity>
                         <Text style={styles.footerText}>Don't Have Account?</Text>
                         <TouchableOpacity style={styles.btnRegister}>

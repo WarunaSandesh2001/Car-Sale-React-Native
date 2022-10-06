@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const port = 4000
 
-const userController = require('./routes/UserController')
+const userController = require('./routes/User')
 
 app.use(express.json())
 

@@ -10,18 +10,24 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
     "@nextui-org/react": "^1.0.0-beta.10",
     "@react-native-masked-view/masked-view": "^0.2.8",
+    "@react-navigation/bottom-tabs": "^6.4.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/stack": "^6.3.1",
     "native-base": "^3.4.17",
     "react": "18.1.0",
     "react-native": "0.70.1",
     "react-native-gesture-handler": "^2.6.2",
+    "react-native-image-crop-picker": "^0.38.0",
+    "react-native-image-picker": "^4.10.0",
     "react-native-linear-gradient": "^2.6.2",
+    "react-native-paper": "^5.0.0-rc.6",
     "react-native-safe-area-context": "^3.4.1",
     "react-native-screens": "^3.17.0",
-    "react-native-svg": "^12.1.1"
+    "react-native-svg": "^12.1.1",
+    "react-native-vector-icons": "^9.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

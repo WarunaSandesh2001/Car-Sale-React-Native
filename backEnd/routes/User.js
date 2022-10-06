@@ -10,7 +10,7 @@ connection.connect(function (err) {
         console.log(err);
     } else {
         console.log('Connected to the MySQL server');
-        var userTableQuery = "CREATE TABLE IF NOT EXISTS users (id VARCHAR(255) PRIMARY KEY, fullName VARCHAR(255), username VARCHAR(255), password VARCHAR(255))"
+        var userTableQuery = "CREATE TABLE IF NOT EXISTS users (fullName VARCHAR(255), username VARCHAR(255), password VARCHAR(255))"
         connection.query(userTableQuery, function (err, result) {
             if (err) throw err;
             //console.log(result); // 
@@ -30,14 +30,14 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    const id = req.body.id
+    console.log("Post Method In Express");
     const fullName = req.body.fullName
     const username = req.body.username
     const password = req.body.password
 
-    var query = "INSERT INTO users (id, fullName, username,password) VALUES (?, ?, ?, ?)";
+    var query = "INSERT INTO users (fullName, username,password) VALUES (?, ?, ?)";
 
-    connection.query(query, [id, fullName, username, password], (err) => {
+    connection.query(query, [fullName, username, password], (err) => {
         if (err) {
             res.send({ 'message': 'duplicate entry' })
         } else {
@@ -48,14 +48,13 @@ router.post('/', (req, res) => {
 })
 
 router.put('/', (req, res) => {
-    const id = req.body.id
     const fullName = req.body.fullName
     const username = req.body.username
     const password = req.body.password
 
-    var query = "UPDATE users SET fullName=?, username=?, password=? WHERE id=?";
+    var query = "UPDATE users SET fullName=?, password=? WHERE username=?";
 
-    connection.query(query, [fullName, username, password, id], (err, rows) => {
+    connection.query(query, [fullName, password , username], (err, rows) => {
         if (err) console.log(err);
 
         if (rows.affectedRows > 0) {
@@ -67,12 +66,12 @@ router.put('/', (req, res) => {
     })
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:username', (req, res) => {
     const id = req.params.id
 
-    var query = "DELETE FROM users WHERE id=?";
+    var query = "DELETE FROM users WHERE username=?";
 
-    connection.query(query, [id], (err, rows) => {
+    connection.query(query, [username], (err, rows) => {
         if (err) console.log(err);
 
         if (rows.affectedRows > 0) {
@@ -83,15 +82,18 @@ router.delete('/:id', (req, res) => {
     })
 })
 
-router.get('/:id', (req, res) => {
-    const id = req.params.id
+router.get('/login/:username/:password', (req, res) => {
+    const username = req.params.username;
+    const password = req.params.password;
 
-    var query = "SELECT * from users WHERE id=?";
+    var query = "SELECT * FROM users WHERE username=? AND password=?";
 
-    connection.query(query, [id], (err, row) => {
-        if(err) console.log(err);
-
-        res.send(row)
+    connection.query(query, [username, password], (err, row) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(row);
+        }
     })
 })
 
