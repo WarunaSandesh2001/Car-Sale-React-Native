@@ -26,7 +26,12 @@ export default function Login({ navigation }) {
             } else {
                 clearTextFields()
                 Alert.alert("Login Successful.");
-                navigation.navigate("LoadAllCars");
+                navigation.navigate("AddCar",{
+                    username: json[0].username,
+                    fullname: json[0].fullName
+                });
+                console.log(json[0].username);
+                console.log(json[0].fullName);
             }
         })
         .catch((err)=>Alert.alert(err.message));
@@ -59,7 +64,6 @@ export default function Login({ navigation }) {
                 </ImageBackground>
             </Box>
         </NativeBaseProvider>
-
     )
 };
 

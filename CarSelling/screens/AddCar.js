@@ -1,13 +1,24 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, HStack, Center, VStack, Input, TextArea, NativeBaseProvider } from 'native-base';
 import { Button, IconButton, MD3Colors } from 'react-native-paper';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-picker';
 
-export default function AddCar() {
-    const image = require('../assets/coverImage.png')
+
+export default function AddCar({ route , navigation }) {
+    // const image = require('../assets/coverImage.png')
     const [photo, setPhoto] = useState(null);
+    
+    const [fullname, setFullName] = useState(route.params.fullname);
+    const [username, setUsername] = useState(route.params.username);
+
+    // const [fullname, setFullName] = useState("waruna");
+    // const [username, setUsername] = useState("w2001");
+
+    const [date, setDate] = useState("");
+    const [location, setLocation] = useState("");
+    const [description, setDescription] = useState("");
 
     const takePhotoFromCamera = async () => {
         const options = {
@@ -40,7 +51,7 @@ export default function AddCar() {
     //     };
     //     ImagePicker.launchImageLibrary(options, (response) => {
     //       console.log('Response = ', response);
-    
+
     //       if (response.didCancel) {
     //         console.log('User cancelled image picker');
     //       } else if (response.error) {
@@ -58,24 +69,82 @@ export default function AddCar() {
     //         });
     //       }
     //     });
-    
+
     //   }
 
-    Library =async () => {
+    Library = async () => {
         let options = {
-          saveToPhotos: true,
-          mediaType: 'photo'
+            saveToPhotos: true,
+            mediaType: 'photo'
         };
-       const result = await launchImageLibrary(options)
-       setPhoto(result.assets[0].uri)
-    
-      }
+        const result = await launchImageLibrary(options)
+        setPhoto(result.assets[0].uri)
+
+        console.log(result.assets[0].uri);
+        
+
+    }
+
+    const createFormData = (photo, body) => {
+        const data = new FormData();
+
+        data.append('photo',{
+            name: photo.fileName,
+            type: photo.type,
+            uri:
+                Platform.OS === 'android' ? photo.uri : photo.uri.replace('file://', ''),
+        });
+
+        console.log(data.uri);
+
+        Object.keys(body).forEach((key) => {
+            data.append(key, body[key]);
+        });
+
+        console.log(data);
+
+        return data;
+    };
+
+    uploadImage = async () => {
+        console.log();
+        fetch('http://192.168.43.224:4000/cars/save', {
+            method: 'POST',
+            body: createFormData(photo, {
+                username: username,
+                date: date,
+                location: location,
+                description: description
+            }),
+            headers:{
+                'Accept': 'application/json',
+                'Content-type': 'multipart/form-data',
+            },
+            
+        })
+            .then((response) => {response.json(); console.log(response.body.photo)})
+            .then((json) => {
+                // console.log('upload succes', response);
+                alert('Upload success!');
+            })
+            .catch((error) => {
+                console.log('upload error', error);
+                alert('Upload failed!');
+            });
+    }
+
+    clearTextFields = () => {
+        setPhoto(null);
+        setDate("");
+        setLocation("");
+        setDescription("");
+    }
 
     return (
         <NativeBaseProvider style={styles.container}>
             <Text style={styles.title}>Save Your Car Details</Text>
 
-            <Image style={styles.uploadImageContainer} source={{uri:photo}} />
+            <Image style={styles.uploadImageContainer} source={{ uri: photo }} />
 
             <HStack space={2} justifyContent={'center'}>
                 <IconButton
@@ -94,16 +163,16 @@ export default function AddCar() {
             </HStack>
 
             <VStack space={4} alignItems="center" mt="5%">
-                <Input type="text" style={styles.input} w="80%" placeholder='Date' borderColor={'black'} />
-                <Input type="text" style={styles.input} require w="80%" placeholder='Location' borderColor={'black'} />
-                <TextArea borderColor={'black'} placeholder="Description" w="80%" h="20" maxW="300" fontSize={15} />
+                <Input type="text" style={styles.input} w="80%" placeholder='Date' borderColor={'black'} value={date} onChangeText={(e) => { setDate(e) }}/>
+                <Input type="text" style={styles.input} require w="80%" placeholder='Location' borderColor={'black'} value={location} onChangeText={(e) => { setLocation(e) }} />
+                <TextArea borderColor={'black'} placeholder="Description" w="80%" h="20" maxW="300" fontSize={15} value={description} onChangeText={(e) => { setDescription(e) }} />
             </VStack>
 
             <HStack space={2} justifyContent={'center'} marginTop={'4%'}>
-                <Button icon="car" mode="contained" width={"40%"} buttonColor='#100459'>
+                <Button icon="car" mode="contained" width={"40%"} buttonColor='#100459' onPress={() => uploadImage()}>
                     Save
                 </Button>
-                <Button icon="delete-sweep" mode="contained" width={"40%"} buttonColor='gray'>
+                <Button icon="delete-sweep" mode="contained" width={"40%"} buttonColor='gray' onPress={() => clearTextFields()}>
                     Clear
                 </Button>
             </HStack>
