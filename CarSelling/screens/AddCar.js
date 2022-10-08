@@ -8,11 +8,10 @@ import ImagePicker from 'react-native-image-picker';
 
 export default function AddCar({ route , navigation }) {
     // const image = require('../assets/coverImage.png')
-    const [photo, setPhoto] = useState(null);
+    const [photo, setPhoto] = useState("");
     
-    const [fullname, setFullName] = useState(route.params.fullname);
     const [username, setUsername] = useState(route.params.username);
-
+    console.log(username);
     // const [fullname, setFullName] = useState("waruna");
     // const [username, setUsername] = useState("w2001");
 
@@ -78,9 +77,9 @@ export default function AddCar({ route , navigation }) {
             mediaType: 'photo'
         };
         const result = await launchImageLibrary(options)
-        setPhoto(result.assets[0].uri)
+        setPhoto(result.assets[0])
 
-        console.log(result.assets[0].uri);
+        console.log(result.assets[0]);
         
 
     }
@@ -101,13 +100,12 @@ export default function AddCar({ route , navigation }) {
             data.append(key, body[key]);
         });
 
-        console.log(data);
+        console.log(data._parts);
 
         return data;
     };
 
     uploadImage = async () => {
-        console.log();
         fetch('http://192.168.43.224:4000/cars/save', {
             method: 'POST',
             body: createFormData(photo, {
@@ -122,10 +120,11 @@ export default function AddCar({ route , navigation }) {
             },
             
         })
-            .then((response) => {response.json(); console.log(response.body.photo)})
+            .then((response) => {response.json();})
             .then((json) => {
                 // console.log('upload succes', response);
                 alert('Upload success!');
+                clearTextFields();
             })
             .catch((error) => {
                 console.log('upload error', error);
@@ -134,7 +133,7 @@ export default function AddCar({ route , navigation }) {
     }
 
     clearTextFields = () => {
-        setPhoto(null);
+        setPhoto("");
         setDate("");
         setLocation("");
         setDescription("");
@@ -144,7 +143,7 @@ export default function AddCar({ route , navigation }) {
         <NativeBaseProvider style={styles.container}>
             <Text style={styles.title}>Save Your Car Details</Text>
 
-            <Image style={styles.uploadImageContainer} source={{ uri: photo }} />
+            <Image style={styles.uploadImageContainer} source={{ uri: photo.uri }} />
 
             <HStack space={2} justifyContent={'center'}>
                 <IconButton

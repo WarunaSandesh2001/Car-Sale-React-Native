@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Button, IconButton, MD3Colors } from 'react-native-paper';
 import { HStack, NativeBaseProvider, Input } from 'native-base';
 
-export default function LoadAllCars({ route , navigation }) {
+export default function LoadAllCars({ route, navigation }) {
     const [DATA, setDATA] = useState(['Kamal']);
 
     const [fullname, setFullName] = useState(route.params.fullname);
@@ -11,53 +11,60 @@ export default function LoadAllCars({ route , navigation }) {
 
     const [posts, setPosts] = useState([]);
 
+    console.log(posts);
+
     const [show, setShow] = React.useState(false);
 
     const searchCars = () => {
 
     };
 
-    loadData();
+    // useEffect(()=>{
+    //     loadAll = () => {
+    //         fetch('https://jsonplaceholder.typicode.com/posts/1',{
+    //             method: "GET",
+    //             headers: {
+    //                 'content-type' : 'application/json'
+    //             }
+    //         })
+    //             .then((response) => response.json())
+    //             .then((json) => console.log(json));
+    //     }
 
-    loadData = () => {
-        fetch('https://jsonplaceholder.typicode.com/posts')
+
+    //     // loadAll();
+    // });
+
+    loadAll = () => {
+        fetch('https://jsonplaceholder.typicode.com/posts', {
+            method: "GET",
+            headers: {
+                'content-type': 'application/json'
+            }
+        })
             .then((response) => response.json())
             .then((json) => setPosts(json));
     }
 
     return (
-        // <View>
-        //     <View>
-        //         <Button icon="car" mode="contained-tonal" textColor='#050354' buttonColor='#c0edfc' style={styles.uploadImage_btn}>
-        //             Add Car
-        //         </Button>
-
-        //     </View>
-        //     <FlatList
-        //         data={DATA}
-        //         renderItem={({ }) =>
-        //             <TouchableOpacity style={{ borderWidth: 1, marginBottom: '5%', padding: 5 }}>
-        //                 <Text style={{ marginBottom: 10, fontWeight: 'bold' }}>Hello</Text>
-        //                 <Text style={{ marginBottom: 10 }}>Body</Text>
-        //             </TouchableOpacity>
-        //         }
-        //     />
-        // </View>
         <NativeBaseProvider style={styles.container}>
 
-            <Text style={styles.title}>YOUR COLLECTION</Text>
+            <Button icon="logout" mode="text" textColor='#050354' style={styles.logout_btn} onPress={() => { navigation.navigate("Login", { username }); }} >
+               Log Out
+            </Button>
+            <Text style={styles.title} onPress={loadAll()}>YOUR COLLECTION</Text>
 
             <HStack space={5} style={styles.hstack}>
                 <View style={styles.search}>
                     {/* <Input type={show ? "text" : "password"} w="60%" InputRightElement={<Button size="xs" rounded="none" w="1/6" h="full" onPress={handleClick}>
                         {show ? "Hide" : "Show"}
                     </Button>} placeholder="Password" /> */}
-                    <Input type={Text} size="md" w="100%" py="0" InputRightElement={<Button size="xs" rounded="none" type="Button" w="1/6" h="full" onPress={searchCars()}>
+                    <Input type={Text} size="md" w="100%" py="0" InputRightElement={<Button size="xs" rounded="none" type="Button" w="1/6" h="full" onPress={() => { searchCars() }}>
                         {show ? "Search" : "Search"}
                     </Button>} placeholder="Search Here" />
                 </View>
 
-                <Button icon="car" mode="contained-tonal" textColor='#050354' buttonColor='#c0edfc' style={styles.uploadImage_btn} >
+                <Button icon="car" mode="contained-tonal" textColor='#050354' buttonColor='#c0edfc' style={styles.uploadImage_btn} onPress={() => { navigation.navigate("AddCar", { username }); }} >
                     Add Car
                 </Button>
 
@@ -92,15 +99,15 @@ const styles = StyleSheet.create({
         marginTop: 50
     },
     hstack: {
-        marginTop: 60,
+        marginTop: 30,
         height: "5%",
         width: "100%"
     },
     title: {
-        color: "black",
+        color: "#030357",
         fontSize: 30,
         alignSelf: "center",
-        marginTop: 30,
+        marginTop: 15,
         fontWeight: '400',
         letterSpacing: 1
     },
@@ -110,5 +117,14 @@ const styles = StyleSheet.create({
         top: -10,
         height: 70,
         width: "60%"
+    },
+    logout_btn: {
+        position: 'relative',
+        top: 6,
+        height: 40,
+        width: '30%',
+        marginLeft: 115,
+        borderRadius: 100,
+        left: 160
     }
 })

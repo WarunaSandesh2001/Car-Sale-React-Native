@@ -26,7 +26,7 @@ export default function Login({ navigation }) {
             } else {
                 clearTextFields()
                 Alert.alert("Login Successful.");
-                navigation.navigate("AddCar",{
+                navigation.navigate("LoadAllCars",{
                     username: json[0].username,
                     fullname: json[0].fullName
                 });

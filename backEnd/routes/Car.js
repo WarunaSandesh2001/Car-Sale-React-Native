@@ -22,24 +22,35 @@ connection.connect(function (err) {
 
 const storage = multer.diskStorage({
     destination(req, file, callback) {
-        callback(null, 'D:/IJSE Course/Mobile Applications/CourseWork/Car Selling/CarSelling/images/');
+        callback(null, 'D:/IJSE Course/Mobile Applications/CourseWork/Car Selling/CarSelling/images');
     },
     filename(req, file, callback) {
-        callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);
+        callback(null, `${file.originalname}`);
     },
 });
 
 const upload = multer({ storage: storage });
 
 router.post('/save',upload.single('photo'),(req,res)=>{
+
+    console.log("Post Method In Car - Express");
+    // console.log(req.file.originalname);
     
-    console.log(req.body.username);
-    console.log(req.body.date);
-    console.log(req.body.location);
-    console.log(req.body.description);
-    // console.log(req.body.date);
-    // console.log(req.file);
-    res.send({"message":"Uploaded"});
+    const username = req.body.username
+    const date = req.body.date
+    const location = req.body.location
+    const description = req.body.description
+    const image = req.file.originalname
+
+    var query = "INSERT INTO cars (username, date, location, description, image) VALUES (?, ?, ?, ?, ?)";
+
+    connection.query(query, [username, date, location, description, image], (err) => {
+        if (err) {
+            res.send({ 'message': 'duplicate entry' })
+        } else {
+            res.send({ 'message': 'user created!' })
+        }
+    })
 })
 
 module.exports = router
