@@ -21,13 +21,13 @@ connection.connect(function (err) {
     }
 })
 
-router.get('/', (req, res) => {
-    var query = "SELECT * FROM users";
-    connection.query(query, (err, rows) => {
-        if (err) console.log(err)
-        res.send(rows)
-    })
-})
+// router.get('/', (req, res) => {
+//     var query = "SELECT * FROM users";
+//     connection.query(query, (err, rows) => {
+//         if (err) console.log(err)
+//         res.send(rows)
+//     })
+// })
 
 router.post('/', (req, res) => {
     console.log("Post Method In Express");
@@ -47,40 +47,40 @@ router.post('/', (req, res) => {
 
 })
 
-router.put('/', (req, res) => {
-    const fullName = req.body.fullName
-    const username = req.body.username
-    const password = req.body.password
+// router.put('/', (req, res) => {
+//     const fullName = req.body.fullName
+//     const username = req.body.username
+//     const password = req.body.password
 
-    var query = "UPDATE users SET fullName=?, password=? WHERE username=?";
+//     var query = "UPDATE users SET fullName=?, password=? WHERE username=?";
 
-    connection.query(query, [fullName, password , username], (err, rows) => {
-        if (err) console.log(err);
+//     connection.query(query, [fullName, password , username], (err, rows) => {
+//         if (err) console.log(err);
 
-        if (rows.affectedRows > 0) {
-            res.send({ 'message': 'user updated' })
-        } else {
-            res.send({ 'message': 'user not found' })
-        }
-        // res.send(rows)
-    })
-})
+//         if (rows.affectedRows > 0) {
+//             res.send({ 'message': 'user updated' })
+//         } else {
+//             res.send({ 'message': 'user not found' })
+//         }
+//         // res.send(rows)
+//     })
+// })
 
-router.delete('/:username', (req, res) => {
-    const id = req.params.id
+// router.delete('/:username', (req, res) => {
+//     const id = req.params.id
 
-    var query = "DELETE FROM users WHERE username=?";
+//     var query = "DELETE FROM users WHERE username=?";
 
-    connection.query(query, [username], (err, rows) => {
-        if (err) console.log(err);
+//     connection.query(query, [username], (err, rows) => {
+//         if (err) console.log(err);
 
-        if (rows.affectedRows > 0) {
-            res.send({ 'message': 'user deleted' })
-        } else {
-            res.send({ 'message': 'user not found' })
-        }
-    })
-})
+//         if (rows.affectedRows > 0) {
+//             res.send({ 'message': 'user deleted' })
+//         } else {
+//             res.send({ 'message': 'user not found' })
+//         }
+//     })
+// })
 
 router.get('/login/:username/:password', (req, res) => {
     const username = req.params.username;

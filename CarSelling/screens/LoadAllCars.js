@@ -1,7 +1,7 @@
-import { StyleSheet, Text, TouchableOpacity, View, FlatList, useEffect } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, FlatList, Image, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { Button, IconButton, MD3Colors } from 'react-native-paper';
-import { HStack, NativeBaseProvider, Input } from 'native-base';
+import { HStack, VStack, NativeBaseProvider, Input } from 'native-base';
 
 export default function LoadAllCars({ route, navigation }) {
     const [DATA, setDATA] = useState(['Kamal']);
@@ -10,8 +10,8 @@ export default function LoadAllCars({ route, navigation }) {
     const [username, setUsername] = useState(route.params.username);
 
     const [posts, setPosts] = useState([]);
+    const [carlist, setCarList] = useState([]);
 
-    console.log(posts);
 
     const [show, setShow] = React.useState(false);
 
@@ -19,40 +19,55 @@ export default function LoadAllCars({ route, navigation }) {
 
     };
 
-    // useEffect(()=>{
-    //     loadAll = () => {
-    //         fetch('https://jsonplaceholder.typicode.com/posts/1',{
-    //             method: "GET",
-    //             headers: {
-    //                 'content-type' : 'application/json'
-    //             }
-    //         })
-    //             .then((response) => response.json())
-    //             .then((json) => console.log(json));
-    //     }
+    // loadAll = () => {
+    //     fetch('https://jsonplaceholder.typicode.com/posts', {
+    //         method: "GET",
+    //         headers: {
+    //             'content-type': 'application/json'
+    //         }
+    //     })
+    //         .then((response) => response.json())
+    //         .then((json) => setPosts(json));
+    // }
 
-
-    //     // loadAll();
-    // });
-
-    loadAll = () => {
-        fetch('https://jsonplaceholder.typicode.com/posts', {
+    loadCars = () => {
+        fetch(`http://192.168.43.224:4000/cars/${username}`, {
             method: "GET",
             headers: {
+
                 'content-type': 'application/json'
             }
         })
             .then((response) => response.json())
-            .then((json) => setPosts(json));
+            .then((json) => setCarList(json));
+    }
+
+    // console.log(carlist);
+
+    const deleteCar = (car) => {
+        fetch(`http://192.168.43.224:4000/cars/deleteCar/${car.carId}`, {
+            method: "DELETE"
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                if (json.status === "200") {
+                    Alert.alert(json.message);
+                } else {
+                    Alert.alert(json.message);
+                }
+            })
+            .catch((err) => {
+                Alert.alert("Error occured,Please try again later.")
+            })
     }
 
     return (
         <NativeBaseProvider style={styles.container}>
 
             <Button icon="logout" mode="text" textColor='#050354' style={styles.logout_btn} onPress={() => { navigation.navigate("Login", { username }); }} >
-               Log Out
+                Log Out
             </Button>
-            <Text style={styles.title} onPress={loadAll()}>YOUR COLLECTION</Text>
+            <Text style={styles.title} onPress={loadCars()}>YOUR COLLECTION</Text>
 
             <HStack space={5} style={styles.hstack}>
                 <View style={styles.search}>
@@ -70,12 +85,59 @@ export default function LoadAllCars({ route, navigation }) {
 
             </HStack>
             <FlatList
-                data={posts}
+                data={carlist}
                 renderItem={({ item }) =>
-                    <TouchableOpacity style={{ borderWidth: 1, marginBottom: '5%', padding: 5, marginTop: 10 }} onPress={() => { console.log("hello"); }}>
-                        <Text style={{ marginBottom: 10, fontWeight: 'bold', color: 'black' }} >{item.title}</Text>
-                        <Text style={{ marginBottom: 10, color: 'black' }} >{item.body}</Text>
-                    </TouchableOpacity>
+                    <View style={{ borderWidth: 1, marginBottom: '5%', padding: 5, marginTop: 10, backgroundColor: "#f7f7ff" }}>
+                        {/* <Image source={require('images\rn_image_picker_lib_temp_0fdf297d-f2ad-4baf-ae1d-29b2eb6d4727.jpg')}/> */}
+                        <HStack space={"5%"}>
+                            <VStack width={"80%"}>
+                                <Text style={{ marginBottom: 10, fontWeight: 'bold', color: 'black' }} >{item.date}</Text>
+                                <Text style={{ marginBottom: 10, fontWeight: 'bold', color: 'green' }} >{item.location}</Text>
+                                <Text style={{ marginBottom: 10, color: 'black' }} >{item.description}</Text>
+                            </VStack>
+                            <VStack space={"5%"}>
+                                <IconButton
+                                    icon="pencil"
+                                    iconColor={MD3Colors.error0}
+                                    size={15}
+                                    mode={'contained'}
+                                    style={styles.captureBtn}
+
+                                />
+                                <IconButton
+                                    icon="delete"
+                                    iconColor={MD3Colors.error50}
+                                    size={15}
+                                    mode={'contained'}
+                                    style={{ backgroundColor: "#fac9c5" }}
+                                    onPress={() => {
+                                        Alert.alert(
+                                            "Confirmation",
+                                            "Do you want to delete this car?",
+                                            [
+                                                {
+                                                    text: "Yes",
+                                                    onPress: () => {
+                                                        deleteCar(item);
+                                                    }
+                                                },
+                                                {
+                                                    text: "No",
+                                                    onPress: () => {
+                                                        console.log("No");
+                                                    }
+                                                }
+                                            ],
+                                            {
+                                                cancelable: true
+                                            }
+                                        )
+                                    }}
+
+                                />
+                            </VStack>
+                        </HStack>
+                    </View>
                 }
             />
         </NativeBaseProvider>
@@ -102,6 +164,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
         height: "5%",
         width: "100%"
+
     },
     title: {
         color: "#030357",
@@ -126,5 +189,9 @@ const styles = StyleSheet.create({
         marginLeft: 115,
         borderRadius: 100,
         left: 160
+    },
+    captureBtn: {
+        marginTop: 15,
+        backgroundColor: "#9bf095"
     }
 })

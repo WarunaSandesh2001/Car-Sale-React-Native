@@ -33,9 +33,9 @@ export default function AddCar({ route , navigation }) {
             } else if (res.errorCode) {
                 console.log(res.errorMessage);
             } else {
-                // const data = res.assets[0].uri;
-                // console.log(data);
-                // setPhoto(data);
+                const data = res.assets[0];
+                console.log(data);
+                setPhoto(data);
             }
         });
         // setPhoto(result.assets[0].uri);
