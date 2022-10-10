@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View, FlatList, Image, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, IconButton, MD3Colors } from 'react-native-paper';
 import { HStack, VStack, NativeBaseProvider, Input } from 'native-base';
 
@@ -29,6 +29,10 @@ export default function LoadAllCars({ route, navigation }) {
     //         .then((response) => response.json())
     //         .then((json) => setPosts(json));
     // }
+
+    // useEffect(() => {
+
+    // });
 
     loadCars = () => {
         fetch(`http://192.168.43.224:4000/cars/${username}`, {
@@ -102,7 +106,9 @@ export default function LoadAllCars({ route, navigation }) {
                                     size={15}
                                     mode={'contained'}
                                     style={styles.captureBtn}
-
+                                    onPress={() => {
+                                        navigation.navigate("UpdateForm", { item });
+                                    }}
                                 />
                                 <IconButton
                                     icon="delete"
@@ -114,21 +120,17 @@ export default function LoadAllCars({ route, navigation }) {
                                         Alert.alert(
                                             "Confirmation",
                                             "Do you want to delete this car?",
-                                            [
-                                                {
+                                            [{
                                                     text: "Yes",
                                                     onPress: () => {
                                                         deleteCar(item);
                                                     }
-                                                },
-                                                {
+                                                },{
                                                     text: "No",
                                                     onPress: () => {
                                                         console.log("No");
                                                     }
-                                                }
-                                            ],
-                                            {
+                                                }],{
                                                 cancelable: true
                                             }
                                         )

@@ -162,7 +162,7 @@ export default function AddCar({ route , navigation }) {
             </HStack>
 
             <VStack space={4} alignItems="center" mt="5%">
-                <Input type="text" style={styles.input} w="80%" placeholder='Date' borderColor={'black'} value={date} onChangeText={(e) => { setDate(e) }}/>
+                <Input type="text" style={styles.input} w="80%" placeholder='Date' borderColor={'blak'} value={date} onChangeText={(e) => { setDate(e) }}/>
                 <Input type="text" style={styles.input} require w="80%" placeholder='Location' borderColor={'black'} value={location} onChangeText={(e) => { setLocation(e) }} />
                 <TextArea borderColor={'black'} placeholder="Description" w="80%" h="20" maxW="300" fontSize={15} value={description} onChangeText={(e) => { setDescription(e) }} />
             </VStack>

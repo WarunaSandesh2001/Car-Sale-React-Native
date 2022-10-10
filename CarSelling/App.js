@@ -5,6 +5,8 @@ import Home from './screens/Home'
 import SignUp from './screens/SignUp'
 import AddCar from './screens/AddCar'
 import LoadAllCars from './screens/LoadAllCars'
+import UpdateForm from './screens/UpdateForm'
+
 //import Home from './screens/Home'
 //import AddData from './screens/AddData'
 import { NavigationContainer } from '@react-navigation/native';
@@ -31,7 +33,7 @@ export default function App() {
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="LoadAllCars" component={LoadAllCars} />
         <Stack.Screen name="AddCar" component={AddCar}  />
-        
+        <Stack.Screen name="UpdateForm" component={UpdateForm}  />
       </Stack.Navigator>
     </NavigationContainer>
 

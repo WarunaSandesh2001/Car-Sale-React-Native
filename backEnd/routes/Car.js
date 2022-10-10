@@ -85,27 +85,27 @@ router.delete('/deleteCar/:carId', (req, res) => {
     })
 })
 
-// router.put('/update', (req, res) => {
-//     const carId = req.body.carId;
-//     const date = req.body.date;
-//     const location = req.body.location;
-//     const description = req.body.description;
+router.put('/update', (req, res) => {
+    const carId = req.body.carId;
+    const date = req.body.date;
+    const location = req.body.location;
+    const description = req.body.description;
 
-//     var query = "UPDATE cars SET date=?,location=?,description=? WHERE carId=?";
+    var query = "UPDATE cars SET date=?,location=?,description=? WHERE carId=?";
 
-//     connection.query(query, [date, location, description, carId], (err) => {
-//         if (err) {
-//             res.send({
-//                 "status": "500",
-//                 "message": "Error occured.Try again!"
-//             });
-//         } else {
-//             res.send({
-//                 "status": "200",
-//                 "message": "Car updated successfully"
-//             });
-//         }
-//     })
-// })
+    connection.query(query, [date, location, description, carId], (err) => {
+        if (err) {
+            res.send({
+                "status": "500",
+                "message": "Error occured.Try again!"
+            });
+        } else {
+            res.send({
+                "status": "200",
+                "message": "Car updated successfully"
+            });
+        }
+    })
+})
 
 module.exports = router
