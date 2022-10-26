@@ -24,8 +24,7 @@ export default function Login({ navigation }) {
             if(json.length === 0){
                 Alert.alert("Username or password incorrect.Try again!")
             } else {
-                clearTextFields()
-                Alert.alert("Login Successful.");
+                clearTextFields();
                 navigation.navigate("LoadAllCars",{
                     username: json[0].username,
                     fullname: json[0].fullName

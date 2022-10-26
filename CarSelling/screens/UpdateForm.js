@@ -7,13 +7,15 @@ export default function UpdateCar({ route, navigation }) {
     const [date, setDate] = useState(route.params.item.date);
     const [location, setLocation] = useState(route.params.item.location);
     const [description, setDescription] = useState(route.params.item.description);
-
+    // console.log(description);
 
     const tempData = {
         date: date,
         location: location,
         description: description
     }
+    // console.log(tempData.description);
+
 
     const clearTextFields = () => {
         setDate("");
@@ -62,7 +64,7 @@ export default function UpdateCar({ route, navigation }) {
                     <Input type="text" style={styles.input} value={tempData.location} onChangeText={(e) => { setLocation(e) }} />
                     <FormControl.Label>Description</FormControl.Label>
                     <TextArea borderColor={'black'} w="100%" h="200"  style={styles.input1} maxW="400" fontSize={15} value={tempData.description} onChangeText={(e) => { setDescription(e) }} />
-
+                   
                     <Button size="md" variant="solid" backgroundColor={"#02992c"} style={styles.update_btn} onPress={() => { updateCar() }} >
                         <Text style={styles.update_btn_label}>Update</Text>
                     </Button>
@@ -97,7 +99,6 @@ const styles = StyleSheet.create({
     },
     input1: {
         color: 'black',
-        fontSize: 12,
-        height: 500
+        fontSize: 12
     }
 })

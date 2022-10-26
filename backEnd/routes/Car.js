@@ -49,7 +49,7 @@ router.post('/save',upload.single('photo'),(req,res)=>{
         if (err) {
             res.send({ 'message': 'duplicate entry' })
         } else {
-            res.send({ 'message': 'user created!' })
+            res.send({ 'message': 'Registered Successfully!' })
         }
     })
 })
@@ -78,7 +78,7 @@ router.delete('/deleteCar/:carId', (req, res) => {
         if (err) console.log(err);
 
         if (rows.affectedRows > 0) {
-            res.send({ 'message': 'Car deleted' })
+            res.send({ 'message': 'Car details deleted' })
         } else {
             res.send({ 'message': 'Car not found' })
         }

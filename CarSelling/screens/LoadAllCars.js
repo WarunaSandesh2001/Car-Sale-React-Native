@@ -89,14 +89,14 @@ export default function LoadAllCars({ route, navigation }) {
 
             </HStack>
             <FlatList
-                data={carlist}
+                data={carlist}S
                 renderItem={({ item }) =>
                     <View style={{ borderWidth: 1, marginBottom: '5%', padding: 5, marginTop: 10, backgroundColor: "#f7f7ff" }}>
                         {/* <Image source={require('images\rn_image_picker_lib_temp_0fdf297d-f2ad-4baf-ae1d-29b2eb6d4727.jpg')}/> */}
                         <HStack space={"5%"}>
                             <VStack width={"80%"}>
-                                <Text style={{ marginBottom: 10, fontWeight: 'bold', color: 'black' }} >{item.date}</Text>
-                                <Text style={{ marginBottom: 10, fontWeight: 'bold', color: 'green' }} >{item.location}</Text>
+                                <Text style={{ marginBottom: 10, fontWeight: 'bold', color: 'black', fontSize: 13}} >{item.date}</Text>
+                                <Text style={{ marginBottom: 10, fontWeight: 'bold', color: 'green', fontSize: 20 }} >{item.location}</Text>
                                 <Text style={{ marginBottom: 10, color: 'black' }} >{item.description}</Text>
                             </VStack>
                             <VStack space={"5%"}>
